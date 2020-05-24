@@ -3,7 +3,7 @@ FROM ubuntu:16.04
 MAINTAINER Matthew Titmus <matthew.titmus@gmail.com>
 
 ARG ANSIBLE_VERSION=2.1.1.0-1~ubuntu16.04.1
-ARG AWSCLI_VERSION=1.12.1
+ARG AWSCLI_VERSION=2.0.7
 ARG HELM_VERSION=2.8.2
 ARG ISTIO_VERSION=0.6.0
 ARG KOPS_VERSION=1.9.0
@@ -33,8 +33,8 @@ RUN apt-get update                                          \
 #
 RUN apt-get update                                          \
   && apt-get -y --force-yes install                         \
-    python-pip                                              \
-  && pip install awscli==${AWSCLI_VERSION}                  \
+  python3-pip                                              \
+  && pip3 install awscli                  \
   && apt-get clean                                          \
   && apt-get autoclean                                      \
   && apt-get autoremove                                     \
@@ -42,7 +42,9 @@ RUN apt-get update                                          \
 
 # Install Ansible
 #
-RUN apt-get update                                          \
+RUN apt-get update 					   \
+  && apt-get -y --force-yes install                         \
+  python-pip                                           \
   && pip install boto                                       \
   && apt-get -y --force-yes install --no-install-recommends \
     software-properties-common                              \
@@ -67,6 +69,7 @@ RUN wget -O terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_V
 #
 ADD https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl /usr/local/bin/kubectl
 RUN chmod +x /usr/local/bin/kubectl
+RUN aws eks --region ap-southeast-2 update-kubeconfig --name int-shared-eks-v1
 
 # Install Kops
 #

@@ -9,7 +9,7 @@ PROJECT = k8s-in-a-can
 ## Tool versions
 ############################
 ANSIBLE_VERSION = 2.1.1.0-1~ubuntu16.04.1
-AWSCLI_VERSION = 1.12.1
+AWSCLI_VERSION = 2.0.7
 HELM_VERSION = 2.8.2
 ISTIO_VERSION = 0.6.0
 KOPS_VERSION = 1.9.0
@@ -19,9 +19,10 @@ TERRAFORM_VERSION = 0.11.0
 ############################
 ## Docker Registry Info
 ############################
-REGISTRY_URL = clockworksoul
-IMAGE_NAME = $(REGISTRY_URL)/$(PROJECT)
-IMAGE_TAG = $(KUBECTL_VERSION)
+REGISTRY_URL = troy
+IMAGE_NAME = troy-in-a-can
+#IMAGE_NAME = $(REGISTRY_URL)/$(PROJECT)
+IMAGE_TAG = latest
 
 help:
 	# Commands:
@@ -55,5 +56,5 @@ build:
 		.
 
 	@echo "\033[36mDoes the k8s-in-a-can.sh script need to be updated with the new label?\033[0m"
-push:
-	@docker push $(IMAGE_NAME):$(IMAGE_TAG)
+#push:
+#	@docker push $(IMAGE_NAME):$(IMAGE_TAG)

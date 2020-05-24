@@ -4,8 +4,8 @@ set -e
 
 # The Docker image and version to use.
 #
-KIIC_IMAGE="clockworksoul/k8s-in-a-can"
-KIIC_VERSION="1.10.1"
+KIIC_IMAGE="troy-in-a-can"
+KIIC_VERSION="v1"
 
 # Determines the fully-qualified script source directory. Don't change this
 # unless you know what you're doing and why.
@@ -19,8 +19,8 @@ readonly SCRIPT_SOURCE_DIRECTORY=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 # The AWS access key ID and and secret access keys. By default these values 
 # are taken from the user's environment, but they can be set here as well.
 #
-ENV_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
-ENV_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV_AWS_ACCESS_KEY_ID=
+ENV_AWS_SECRET_ACCESS_KEY=
 
 # The address of the kops state store: an S3 bucket where the cluster
 # configuration lives (example: `s3://my-kops-state`)
@@ -132,7 +132,7 @@ touch ${VOLUME_GITCONFIG} ${VOLUME_KUBE}/config
 
 # Make sure that we have the newest version of the image.
 #
-docker pull ${KIIC_IMAGE}:${KIIC_VERSION} || true
+#docker pull ${KIIC_IMAGE}:${KIIC_VERSION} || true
 
 # Finally, run and attach to the container proper.
 #
@@ -150,4 +150,6 @@ docker run -it \
   -e AWS_ACCESS_KEY_ID=${ENV_AWS_ACCESS_KEY_ID} \
   -e AWS_SECRET_ACCESS_KEY=${ENV_AWS_SECRET_ACCESS_KEY} \
   -e KOPS_STATE_STORE=${ENV_KOPS_STATE_STORE} \
-  ${KIIC_IMAGE}:${KIIC_VERSION}
+  troy-in-a-can aws eks --region ap-southeast-2 update-kubeconfig --name int-shared-eks-v1 && kubectl get pods
+  
+  #${KIIC_IMAGE}:${KIIC_VERSION}
